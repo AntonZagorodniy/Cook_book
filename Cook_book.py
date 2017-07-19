@@ -27,10 +27,10 @@ def get_cook_book():
                     for item in range(0, int(line)):
                         cook_book[name_of_the_recipe].append({'ingridient_name': [], 'quantity': [],
                                                               'measure': []})
-                        # if '|' in line:
-                for it in range(0, len(cook_book[name_of_the_recipe])):
-                    str = line.split(" | ")
-                    cook_book[name_of_the_recipe][it].update({'ingridient_name': str[0],
+                if '|' in line:
+                    for it in range(0, len(cook_book[name_of_the_recipe])):
+                        str = line.split(" | ")
+                        cook_book[name_of_the_recipe][it].update({'ingridient_name': str[0],
                                                                                 'quantity': str[1], 'measure': str[2]})
                 print(cook_book)
             return cook_book

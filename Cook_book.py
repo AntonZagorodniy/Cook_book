@@ -1,47 +1,36 @@
+
 def get_cook_book():
-    cook_book = {}
-    try:
-        with open('List_of_recipes.txt', encoding='utf-8-sig') as file:
-            lines = file.readlines()
-            for line in lines:
-                line = line.rstrip('\n')
-                if line.isalpha():
-                    name_of_the_recipe = line
-                    cook_book.update({name_of_the_recipe: []})
+    cook_book = dict()
+    with open('List_of_recipes.txt', encoding='utf-8-sig') as file:
+        lines = file.readlines()
 
+    dish = ""
+    for l in lines:
+        tempstr = l.replace("\n", "")
+        tempstr = l.strip()
+        if tempstr.isalpha():
+            dish = tempstr.lower()
+            cook_book[dish] = list()
+        elif len(tempstr) == 0:
+            dish = ""
+        elif tempstr.isdigit():
+            pass
+        else:
+            ingrs = tempstr.split("|")
+            for i, ingr in enumerate(ingrs):
+                ingrs[i] = ingrs[i].strip()
+            tempdict = dict()
+            tempdict["ingridient_name"] = ingrs[0].lower()
+            tempdict["quantity"] = int(ingrs[1])
+            tempdict["measure"] = ingrs[2]
+            cook_book[dish].append(tempdict)
 
-                # if line.isdigit():
-                #     for item in range(0, int(line)):
-                #         cook_book[name_of_the_recipe].append({'ingridient_name': [], 'quantity': [],
-                #                                           'measure': []})
-                # # count = -1
-                # document_type = []
-                # if '|' in line:
-                #     # count += 1
-                #     for _ in line:
-                #
-                #         str = line.split(" | ")
-                #         cook_book[name_of_the_recipe][0].update({'ingridient_name': str[0], 'quantity': str[1],
-                #                                                 'measure': str[2]})
-                if line.isdigit(): #or line.isalnum:
-                    for item in range(0, int(line)):
-                        cook_book[name_of_the_recipe].append({'ingridient_name': [], 'quantity': [],
-                                                              'measure': []})
-                if '|' in line:
-                    for it in range(0, len(cook_book[name_of_the_recipe])):
-                        str = line.split(" | ")
-                        cook_book[name_of_the_recipe][it].update({'ingridient_name': str[0],
-                                                                                'quantity': str[1], 'measure': str[2]})
-                print(cook_book)
-            return cook_book
-    except FileNotFoundError:
-        print('Файл не найден')
+    return cook_book
 
 
 def get_shop_list_by_dishes(dishes, person_count):
     shop_list = {}
     cook_book = get_cook_book()
-    # print(cook_book)
     for dish in dishes:
         for ingridient in cook_book[dish]:
             new_shop_list_item = dict(ingridient)

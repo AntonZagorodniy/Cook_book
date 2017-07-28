@@ -2,29 +2,27 @@
 def get_cook_book():
     cook_book = dict()
     with open('List_of_recipes.txt', encoding='utf-8-sig') as file:
-        lines = file.readlines()
 
-    dish = ""
-    for l in lines:
-        tempstr = l.replace("\n", "")
-        tempstr = l.strip()
-        if tempstr.isalpha():
-            dish = tempstr.lower()
-            cook_book[dish] = list()
-        elif len(tempstr) == 0:
-            dish = ""
-        elif tempstr.isdigit():
-            pass
-        else:
-            ingrs = tempstr.split("|")
-            for i, ingr in enumerate(ingrs):
-                ingrs[i] = ingrs[i].strip()
-            tempdict = dict()
-            tempdict["ingridient_name"] = ingrs[0].lower()
-            tempdict["quantity"] = int(ingrs[1])
-            tempdict["measure"] = ingrs[2]
-            cook_book[dish].append(tempdict)
 
+        dish = ""
+        for l in file:
+            tempstr = l.strip()
+            if '|' in tempstr:
+                ingrs = tempstr.split("|")
+                for i, ingr in enumerate(ingrs):
+                    ingrs[i] = ingrs[i].strip()
+                tempdict = dict()
+                tempdict["ingridient_name"] = ingrs[0].lower()
+                tempdict["quantity"] = int(ingrs[1])
+                tempdict["measure"] = ingrs[2]
+                cook_book[dish].append(tempdict)
+            elif len(tempstr) == 0:
+                continue
+            elif tempstr.isdigit():
+                pass
+            else:
+                dish = tempstr.lower()
+                cook_book[dish] = list()
     return cook_book
 
 
